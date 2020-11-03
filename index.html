@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap" rel="stylesheet">
+    
+    <title>ToDo Application</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+        
+
+        <div class='AppWrapper'>
+            
+            <header>
+                <div class="HeaderText">
+                    <h2>ToDo web application</h2>
+                    <div class="HideCompletedSection">
+                        <span>
+                            Hide completed
+                        </span>
+                        <input type="checkbox" name="Hide Completed" id="HideCompleted">
+                    </div>
+
+                </div>
+                <div class="InfoSection">
+                    <div class="statusInfo">
+                        <span class='StatusName'>Active</span>
+                        <span class='StatusValue' id='ActiveCount'></span>
+                    </div>
+                    <div class="statusInfo">
+                        <span class='StatusName'>Due soon</span>
+                        <span class='StatusValue' id='DueSoonCount'></span>
+                    </div>
+                    <div class="statusInfo">
+                        <span class='StatusName'>Completed</span>
+                        <span class='StatusValue' id='CompletedCount'></span>
+                    </div>
+                </div>
+
+            </header>
+            
+            <div class="AdditionForm">
+                <p>You can add new task</p>
+                <form action="">
+                    <input type="text" name="New Task Text" id="NewTaskText" placeholder='New task name'>
+                    <input type="date" name="New Task Due" id="NewTaskDue">
+                    <input type="button" value="Add" id='AddBtn'>
+                </form>
+            </div>
+            <div class="TaskList" id='TaskList'>
+                <!-- <div class="Task ActiveTask ">
+                    <span>Task Name</span>
+                    <span class='DaysLeft'>10 Days</span>
+                    <div class="buttons">
+                        <button class="CmplBtn"></button>
+                        <button class="DelBtn"></button>
+                    </div>
+                </div>
+                <div class="Task ActiveTask">
+                    <span>Task Name</span>
+                    <span class='DaysLeft'>3 Days</span>
+                    <div class="buttons">
+                        <button class="CmplBtn"></button>
+                        <button class="DelBtn"></button>
+                    </div>
+                </div>
+                <div class="Task ActiveTask RedTask">
+                    <span>Task Name</span>
+                    <span class='DaysLeft'>1 Day</span>
+                    <div class="buttons">
+                        <button class="CmplBtn"></button>
+                        <button class="DelBtn"></button>
+                    </div>
+                </div>
+                <div class="Task CompletedTask">
+                    <span>Task Name</span>
+                    <span>Completed Date</span>
+                </div>
+                <div class="Task CompletedTask">
+                    <span>Task Name</span>
+                    <span>Completed Date</span>
+                </div>
+                <div class="Task CompletedTask">
+                    <span>Task Name</span>
+                    <span>Completed Date</span>
+                </div>
+                <div class="Task CompletedTask">
+                    <span>Task Name</span>
+                    <span>Completed Date</span>
+                </div>
+                <div class="Task CompletedTask">
+                    <span>Task Name</span>
+                    <span>Completed Date</span>
+                </div> -->
+            </div>
+        </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

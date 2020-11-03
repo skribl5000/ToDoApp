@@ -1,0 +1,207 @@
+
+
+
+
+/* my styles starts here */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600;700&display=swap');
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    }
+    
+body{
+    background-color: #DDDCC2;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.AppWrapper{
+    margin: 0 auto;
+    margin-top: 5%;
+    border: 2px solid black;
+    width: 50%;
+    height:600px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+.HideCompletedSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    padding: 10px 5px;
+    width: 60%;
+}
+
+.TaskList {
+    border: 0.1px solid gray;
+    padding-right: 10px;
+    width:90%;
+    height: 500px;
+    overflow-y: scroll;
+    margin: 0 auto;
+    margin-top:2%;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    border-radius: 15px;
+}
+.AppWrapper div{
+    margin: 10px;
+}
+header{
+    align-self: flex-start;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    width: 100%;
+}
+.HeaderText{
+    align-content: center;
+    width: 50%;
+}
+.InfoSection{
+    border: 0px;
+    border-radius: 15px;
+    background-color: #C4C4C4;
+    width: 30%;
+    padding:10px;
+}
+
+div.statusInfo{
+    border:0px;
+    border-bottom: 1px solid black;
+    padding:10px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+div.statusInfo:last-child{
+    border:none;
+}
+
+.AdditionForm{
+    width:70%;  
+    align-self: start;
+}
+.AdditionForm form{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    background-color: #66BC69;
+    border-radius: 15px;
+}
+.AdditionForm p{
+    margin:5px;
+}
+
+.Task{
+    vertical-align: middle;
+    margin-top:0 auto;
+    width:95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.Task span, .AdditionForm form input{
+    margin:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    width: 20%;
+    border-radius: 10px;
+    margin:4px;
+    padding:10px 5px;
+    border:0px;
+    background-color: #EBEADC;
+}
+.DaysLeft{
+    text-align: center;
+}
+
+#AddBtn{
+    background-color: #97B8C6 !important;
+}
+
+.ActiveTask{
+    border: 1px solid black;
+}
+
+.CompletedTask{
+    border:0px;
+    color:gray;
+    font-weight: 300;
+}
+
+.CompletedTask span:last-child{
+    text-align: center;
+    background-color: #EBEADC;
+    width: 37%;
+}
+
+.Task span:first-child{
+    width: 60%;
+}
+
+.RedTask .DaysLeft{
+    color:red;
+    font-weight: 600;
+}
+
+.buttons{
+    width: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    border:none;
+}
+.buttons button{
+    margin-left: 2px;
+    border: none;
+    padding:14px;
+    border-radius: 5px;
+}
+.buttons button:first-child{
+    margin-left: 0px;
+}
+.CmplBtn{
+    background-color: #006a4e;
+}
+
+.DelBtn{
+    background-color: #B22121;
+}
+h2{
+    font-weight: 600;
+    font-size: 24px;
+}
+
+#NewTaskText{
+    width: 30%;
+}
+#NewTaskDue{
+    width: 30%;
+}
+#HideCompleted{
+    /*TODO: size of checkbox */
+}
+
+.HiddenTask{
+    display: none;
+}
+
+
