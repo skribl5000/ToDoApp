@@ -1,77 +1,87 @@
+document.addEventListener("DOMContentLoaded", loadTasks);
 
-
-document.addEventListener("DOMContentLoaded", LoadTasks);
-window.addEventListener("load", updateStats);
-
-// import * as fs from 'fs';
+let addBtn = document.getElementById('AddBtn');
+addBtn.addEventListener('click', CreateTask);
 
 let taskDiv = document.getElementById('TaskList');
-completedFilter = document.getElementById('HideCompleted');
+let completedFilter = document.getElementById('HideCompleted');
 completedFilter.addEventListener('change', filterTasks)
 
+const API_URL ='http://localhost:5000/todo/api/v1.0/tasks'
 
-async function readFile(filePath) {
-    const response = await fetch(filePath, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
 
-    const data = await response.json()
-    return data
+async function loadTasks(){
+    getTasks(API_URL);
+    updateStats();
 }
 
-async function LoadTasks() {
-    const data = await readFile('./data.json');
-    for (var id in data['tasks']) {
-        let task = data['tasks'][id];
-        let taskElement = document.createElement('div');
-        taskElement.setAttribute('taskid', id)
-        taskElement.classList.add('Task');
-        let taskName = document.createElement('span')
-        taskName.textContent = task['name']
-        taskElement.appendChild(taskName);
-        let today = new Date()
-        if (task["status"] == "Active") {
-            taskElement.classList.add('ActiveTask');
+async function getTasks(url) {
 
-            let targetDate = Date.parse(task['targetDate']);
-            let daysLeft = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
-            if (daysLeft < 0) {
-                daysLeft = 0;
-            }
-            let daysLeftElement = document.createElement('span');
-            daysLeftElement.classList.add('DaysLeft');
-            if (daysLeft == 1) {
-                daysLeftElement.textContent = daysLeft.toString() + ' Day';
-            }
-            else {
-                daysLeftElement.textContent = daysLeft.toString() + ' Days';
-            }
-            taskElement.appendChild(daysLeftElement)
+    while (taskDiv.firstChild) {
+        taskDiv.removeChild(taskDiv.firstChild);
+    }
 
-            if (daysLeft < 3) {
-                taskElement.classList.add('RedTask');
-            }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'
+      },
+    });
+  const response_data = await response.json().then(data=> {
+    return data
+   });
 
-            buttons = CreateButtons();
-            taskElement.appendChild(buttons);
+   for (var id in response_data['tasks']) {
+    let task = response_data['tasks'][id];
+    let taskElement = document.createElement('div');
+    taskElement.setAttribute('taskid', id)
+    taskElement.classList.add('Task');
+    let taskName = document.createElement('span')
+    taskName.textContent = task['name']
+    taskElement.appendChild(taskName);
+    let today = new Date()
+    if (task["status"] == "Active") {
+        taskElement.classList.add('ActiveTask');
 
+        let targetDate = Date.parse(task['targetDate']);
+        let daysLeft = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+        if (daysLeft < 0) {
+            daysLeft = 0;
+        }
+        let daysLeftElement = document.createElement('span');
+        daysLeftElement.classList.add('DaysLeft');
+        if (daysLeft == 1) {
+            daysLeftElement.textContent = daysLeft.toString() + ' Day';
         }
         else {
-            let completedDate = task['completedDate']
-            complDateElem = document.createElement('span');
-            complDateElem.textContent = completedDate;
-            taskElement.appendChild(complDateElem);
-            taskElement.classList.add('CompletedTask');
+            daysLeftElement.textContent = daysLeft.toString() + ' Days';
+        }
+        taskElement.appendChild(daysLeftElement)
+
+        if (daysLeft < 3) {
+            taskElement.classList.add('RedTask');
         }
 
+        buttons = CreateButtons();
+        taskElement.appendChild(buttons);
 
-
-        taskDiv.append(taskElement);
     }
+    else {
+        let completedDate = task['completedDate']
+        complDateElem = document.createElement('span');
+        complDateElem.textContent = completedDate;
+        taskElement.appendChild(complDateElem);
+        taskElement.classList.add('CompletedTask');
+    }
+    taskDiv.append(taskElement);
+
+    updateStats();
 }
+
+}
+
+
 
 
 function CreateButtons() {
@@ -89,29 +99,93 @@ function CreateButtons() {
     return buttons
 }
 
-function DeleteElement() {
+async function DeleteElement() {
+    let taskId = this.parentElement.parentElement.getAttribute('taskid')
+    let request_url = API_URL + '/' + taskId;
+    let data = {
+        'removed': 1
+    }
+    const response = await fetch(request_url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    const response_data = await response.json().then(data=> {
+        return data
+    });
+    console.log(data);
     this.parentElement.parentElement.remove();
 }
-function CompleteElement() {
-    let data = readFile('./data.json')
-    var new_data;
-    data.then(
-        data=> data['tasks'][this.parentElement.parentElement.getAttribute('taskid')]
-    )
-    console.log(new_data);
 
+async function CreateTask(){
+    let data = {
+        'name': document.getElementById('NewTaskText').value,
+        'targetDate': document.getElementById('NewTaskDue').value,
+    }
+    if (data['targetDate'] == '' || data['name'] == '' ){
+        alert('Task name and target date must be provided!');
+        return;
+    }
 
-    // this.parentElement.parentElement.classList.remove('RedTask');
-    // this.parentElement.parentElement.classList.remove('ActiveTask');
-    // this.parentElement.parentElement.classList.add('CompletedTask');
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const response_data = await response.json().then(data=> {
+          return data
+      });
+      console.log(response_data);
 
-    // let completedDate = new Date();
-    // let complDateElem = document.createElement('span');
-    // completedDate = completedDate.getFullYear().toString() + '-' 
-    // + String(completedDate.getMonth() + 1).padStart(2, '0') + '-' 
-    // + String(completedDate.getDate()).padStart(2, '0');
-    // complDateElem.textContent = completedDate;
-    // this.parentElement.parentElement.
+      loadTasks();
+
+}
+
+async function CompleteElement() {
+    let taskId = this.parentElement.parentElement.getAttribute('taskid')
+    let request_url = API_URL + '/' + taskId;
+
+    let completedDate = new Date();
+    let complDateElem = document.createElement('span');
+
+    completedDate = completedDate.getFullYear().toString() + '-' 
+     + String(completedDate.getMonth() + 1).padStart(2, '0') + '-' 
+     + String(completedDate.getDate()).padStart(2, '0');
+
+    let data = {
+        'status': 'Closed',
+        'completedDate': completedDate,
+    }
+    const response = await fetch(request_url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    const response_data = await response.json().then(data=> {
+        return data
+    });
+    
+    complDateElem.textContent = completedDate;
+    this.parentElement.parentElement.classList.remove('RedTask');
+    this.parentElement.parentElement.classList.remove('ActiveTask');
+    this.parentElement.parentElement.classList.add('CompletedTask');
+    let taskElement = this.parentElement.parentElement
+    let field = this.parentElement.parentElement.getElementsByClassName('DaysLeft')[0];
+    let buttons = this.parentElement.parentElement.getElementsByClassName('buttons')[0];
+    field.remove();
+    buttons.remove();
+    taskElement.append(complDateElem);
+
+    updateStats();
 }
 
 async function filterTasks() {
@@ -133,8 +207,6 @@ async function filterTasks() {
 }
 
 async function updateStats() {
-    const data = await readFile('./data.json');
-
     let activeCounter = document.getElementById('ActiveCount');
     let completedCounter = document.getElementById('CompletedCount');
     let dueCounter = document.getElementById('DueSoonCount');
@@ -158,7 +230,3 @@ async function updateStats() {
     completedCounter.textContent = c;
     dueCounter.textContent = d;
 }
-
-
-
-
